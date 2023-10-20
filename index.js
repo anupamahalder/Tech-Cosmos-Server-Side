@@ -1,0 +1,13 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const port = process.env.PORT || 5000;
+
+// create a root route 
+app.get('/',(req, res)=>{
+    res.send('Tech cosmos server is running...');
+})
+
+app.listen(port, ()=>{
+    console.log(`Server is running on PORT:${port}`);
+})
