@@ -21,31 +21,35 @@ const client = new MongoClient(uri, {
   }
 });
 
-const user = {
-  name:'Anupama Halder',
-  brand: 'Google',
-  age: '25',
-  address: '123 AS Road'
-}
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // giving the collection name in which we will perform operation 
     const myBrandCollection = client.db('brandDB').collection('brand');
+    // create google brand collection 
+    const googleBrandCollection = client.db('brandDB').collection('googleBrand');
 
     // insert data to the collection and give a callback function and a parameter
-    app.post('/user', async(req, res)=>{
-      const result = myBrandCollection.insertOne(user);
+    // app.post('/user', async(req, res)=>{
+    //   const result = myBrandCollection.insertOne(user);
+    //   console.log(result);
+    //   res.send(result);
+    // })
+    // insert data to google brand 
+    app.get('/brands/google', async(req, res)=>{
+      const cursor = googleBrandCollection.find();
+      const result = await cursor.toArray();
       console.log(result);
       res.send(result);
     })
     // display data to the client from user
-    app.get('/user', async(req, res)=>{
+    app.get('/brands', async(req, res)=>{
       const cursor = myBrandCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
