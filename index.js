@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -29,6 +29,8 @@ async function run() {
     const myBrandCollection = client.db('brandDB').collection('brand');
     // create google brand collection 
     const googleBrandCollection = client.db('brandDB').collection('googleBrand');
+    // create canon brand collection 
+    const canonBrandCollection = client.db('brandDB').collection('canonBrand');
 
     // insert data to the collection and give a callback function and a parameter
     // app.post('/user', async(req, res)=>{
@@ -36,11 +38,18 @@ async function run() {
     //   console.log(result);
     //   res.send(result);
     // })
-    // insert data to google brand 
+    // read data of google brand 
     app.get('/brands/google', async(req, res)=>{
       const cursor = googleBrandCollection.find();
       const result = await cursor.toArray();
-      console.log(result);
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of canon brand 
+    app.get('/brands/canon', async(req, res)=>{
+      const cursor = canonBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
       res.send(result);
     })
     // display data to the client from user
@@ -49,6 +58,14 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+    // display one specific data item with id of google product
+    app.get('/products/google/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await googleBrandCollection.findOne(query);
+      res.send(result);
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
