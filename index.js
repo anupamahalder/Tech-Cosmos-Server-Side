@@ -31,6 +31,16 @@ async function run() {
     const googleBrandCollection = client.db('brandDB').collection('googleBrand');
     // create canon brand collection 
     const canonBrandCollection = client.db('brandDB').collection('canonBrand');
+    // create sony brand collection 
+    const sonyBrandCollection = client.db('brandDB').collection('sonyBrand');
+    // create microsoft brand collection 
+    const microsoftBrandCollection = client.db('brandDB').collection('microsoftBrand');
+    // create lg electronics brand collection 
+    const lgelectronicsBrandCollection = client.db('brandDB').collection('lgelectronicsBrand');
+    // create apple brand collection 
+    const appleBrandCollection = client.db('brandDB').collection('appleBrand');
+    // create samsung brand collection 
+    const samsungBrandCollection = client.db('brandDB').collection('samsungBrand');
 
     // insert data to the collection and give a callback function and a parameter
     // app.post('/user', async(req, res)=>{
@@ -48,6 +58,41 @@ async function run() {
     // read data of canon brand 
     app.get('/brands/canon', async(req, res)=>{
       const cursor = canonBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of samsung brand 
+    app.get('/brands/samsung', async(req, res)=>{
+      const cursor = samsungBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of lgelectronics brand 
+    app.get('/brands/lgelectronics', async(req, res)=>{
+      const cursor = lgelectronicsBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of apple brand 
+    app.get('/brands/apple', async(req, res)=>{
+      const cursor = appleBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of microsoft brand 
+    app.get('/brands/microsoft', async(req, res)=>{
+      const cursor = microsoftBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of sony brand 
+    app.get('/brands/sony', async(req, res)=>{
+      const cursor = sonyBrandCollection.find();
       const result = await cursor.toArray();
       // console.log(result);
       res.send(result);
