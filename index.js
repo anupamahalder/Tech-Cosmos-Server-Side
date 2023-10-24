@@ -25,6 +25,9 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    // ---------------create collection -----------------
+
     // giving the collection name in which we will perform operation 
     const myBrandCollection = client.db('brandDB').collection('brand');
     // create google brand collection 
@@ -41,13 +44,13 @@ async function run() {
     const appleBrandCollection = client.db('brandDB').collection('appleBrand');
     // create samsung brand collection 
     const samsungBrandCollection = client.db('brandDB').collection('samsungBrand');
+    // create dell brand collection 
+    const dellBrandCollection = client.db('brandDB').collection('dellBrand');
+    // create collection for my cart data 
+    const myCartCollection = client.db('brandDB').collection('myCartData');
 
-    // insert data to the collection and give a callback function and a parameter
-    // app.post('/user', async(req, res)=>{
-    //   const result = myBrandCollection.insertOne(user);
-    //   console.log(result);
-    //   res.send(result);
-    // })
+    // -------------------Read data from database -----------------------
+
     // read data of google brand 
     app.get('/brands/google', async(req, res)=>{
       const cursor = googleBrandCollection.find();
@@ -72,6 +75,13 @@ async function run() {
     // read data of lgelectronics brand 
     app.get('/brands/lgelectronics', async(req, res)=>{
       const cursor = lgelectronicsBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of dell brand 
+    app.get('/brands/dell', async(req, res)=>{
+      const cursor = dellBrandCollection.find();
       const result = await cursor.toArray();
       // console.log(result);
       res.send(result);
@@ -103,6 +113,9 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+
+    // ------------Display data from brands using id ---------------
+
     // display one specific data item with id of google product
     app.get('/products/google/:id', async(req, res)=>{
       const id = req.params.id;
@@ -110,7 +123,83 @@ async function run() {
       const result = await googleBrandCollection.findOne(query);
       res.send(result);
     })
+    // display one specific data item with id of sony product
+    app.get('/products/sony/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await sonyBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of samsung product
+    app.get('/products/samsung/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await samsungBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of dell product
+    app.get('/products/dell/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await dellBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of microsoft product
+    app.get('/products/microsoft/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await microsoftBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of lgelectronics product
+    app.get('/products/lgelectronics/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await lgelectronicsBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of canon product
+    app.get('/products/canon/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await canonBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of intel product
+    app.get('/products/intel/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await intelBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of microsoft product
+    app.get('/products/microsoft/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await microsoftBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of apple product
+    app.get('/products/apple/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await appleBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // display one specific data item with id of dell product
+    app.get('/products/dell/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await dellBrandCollection.findOne(query);
+      res.send(result);
+    })
+    // ---------------Insert data for add to cart in myCartData collection --------
 
+    app.post('/mycart',async(req, res)=>{
+      const newData = req.body;
+      const result = await myCartCollection.insertOne(newData);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
