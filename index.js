@@ -219,6 +219,63 @@ async function run() {
       const result = await myCartCollection.insertOne(newData);
       res.send(result);
     })
+    // ---------------Insert data for add products to google collection --------
+
+    app.post('/brands/google',async(req, res)=>{
+      const newData = req.body;
+      const result = await googleBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to canon collection --------
+
+    app.post('/brands/canon',async(req, res)=>{
+      const newData = req.body;
+      const result = await canonBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to samsung collection --------
+
+    app.post('/brands/samsung',async(req, res)=>{
+      const newData = req.body;
+      const result = await samsungBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to microsoft collection --------
+
+    app.post('/brands/microsoft',async(req, res)=>{
+      const newData = req.body;
+      const result = await microsoftBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to sony collection --------
+
+    app.post('/brands/sony',async(req, res)=>{
+      const newData = req.body;
+      const result = await sonyBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to intel collection --------
+
+    app.post('/brands/intel',async(req, res)=>{
+      const newData = req.body;
+      const result = await intelBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to apple collection --------
+
+    app.post('/brands/apple',async(req, res)=>{
+      const newData = req.body;
+      const result = await appleBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    // ---------------Insert data for add products to dell collection --------
+
+    app.post('/brands/dell',async(req, res)=>{
+      const newData = req.body;
+      const result = await dellBrandCollection.insertOne(newData);
+      res.send(result);
+    })
+    
 
     // ------------------Read all data from my cart data ----------------------------
     app.get('/mycart', async(req, res)=>{
