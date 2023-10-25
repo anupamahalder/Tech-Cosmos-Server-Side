@@ -58,6 +58,8 @@ async function run() {
     const dellBrandCollection = client.db('brandDB').collection('dellBrand');
     // create collection for my cart data 
     const myCartCollection = client.db('brandDB').collection('myCartData');
+    // create collection for brands advertisement 
+    const brandAdvertisementCollection = client.db('brandDB').collection('brandAdvertisement');
 
     // -------------------Read data from database -----------------------
 
@@ -236,11 +238,24 @@ async function run() {
     //------------- create delete api to delete one time from mycart --------------------
     app.delete('/mycart/:id',async(req, res)=>{
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const query = {_id: id};
       const result = await myCartCollection.deleteOne(query);
       res.send(result);
     })
-    
+    // ----------------Read All data from brands advertisement ----------------
+    app.get('/brands/advertisement', async(req, res)=>{
+      const cursor = brandAdvertisementCollection.find();
+      const result = await cursor.toArray();
+      res.send(result); 
+    })
+    // ----------------Read specific data from brands advertisement ----------------
+    app.get('/brands/advertisement/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {brand: id};
+      console.log(id);
+      const result = await brandAdvertisementCollection.findOne(query);
+      res.send(result); 
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
