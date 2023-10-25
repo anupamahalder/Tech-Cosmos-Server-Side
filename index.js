@@ -252,9 +252,15 @@ async function run() {
     app.get('/brands/advertisement/:id', async(req, res)=>{
       const id = req.params.id;
       const query = {brand: id};
-      console.log(id);
+      // console.log(id);
       const result = await brandAdvertisementCollection.findOne(query);
-      res.send(result); 
+      if(result){
+        res.send(result);
+        console.log(result);
+      }
+      else{
+        res.status(404).json({ error: 'Advertisement not found' });
+      } 
     })
 
     // Send a ping to confirm a successful connection
