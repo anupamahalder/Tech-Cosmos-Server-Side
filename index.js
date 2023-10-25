@@ -319,6 +319,231 @@ async function run() {
         res.status(404).json({ error: 'Advertisement not found' });
       } 
     })
+    // ---------------------Update data for google product ---------------
+    // create an api to update data 
+    app.put('/google/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await googleBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for sony product ---------------
+    // create an api to update data 
+    app.put('/sony/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await sonyBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for apple product ---------------
+    // create an api to update data 
+    app.put('/apple/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await appleBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for samsung product ---------------
+    // create an api to update data 
+    app.put('/samsung/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await samsungBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for microsoft product ---------------
+    // create an api to update data 
+    app.put('/microsoft/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await microsoftBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for dell product ---------------
+    // create an api to update data 
+    app.put('/dell/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await dellBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for intel product ---------------
+    // create an api to update data 
+    app.put('/intel/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await intelBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for lg electronics product ---------------
+    // create an api to update data 
+    app.put('/lgelectronics/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await lgelectronicsBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
+    // ---------------------Update data for canon product ---------------
+    // create an api to update data 
+    app.put('/canon/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = {upsert: true};
+      // take data from body of request 
+      const updateProduct = req.body;
+      const product = {
+        $set:{
+          // name the fileds that we want to set/update 
+          name: updateProduct.name, 
+          brand: updateProduct.brand, 
+          image: updateProduct.image,
+          type: updateProduct.type, 
+          price: updateProduct.price, 
+          rating: updateProduct.rating, 
+          key_name: updateProduct.key_name, 
+          category: updateProduct.category, 
+          description: updateProduct.description
+        }
+      }
+      const result = await canonBrandCollection.updateOne(filter, product, option);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
