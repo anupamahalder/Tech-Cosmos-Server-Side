@@ -3,12 +3,20 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
-const port = process.env.PORT || 5050;
+const port = process.env.PORT || 5033;
 
 // middleware 
 app.use(cors());
 app.use(express.json());
 
+// create a root route 
+app.get('/',(req, res)=>{
+  res.send('Tech cosmos server is running...');
+})
+
+app.listen(port, ()=>{
+  console.log(`Server is running on PORT:${port}`);
+})
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.rvmau43.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -42,6 +50,8 @@ async function run() {
     const lgelectronicsBrandCollection = client.db('brandDB').collection('lgelectronicsBrand');
     // create apple brand collection 
     const appleBrandCollection = client.db('brandDB').collection('appleBrand');
+    // create intel brand collection 
+    const intelBrandCollection = client.db('brandDB').collection('intelBrand');
     // create samsung brand collection 
     const samsungBrandCollection = client.db('brandDB').collection('samsungBrand');
     // create dell brand collection 
@@ -80,12 +90,12 @@ async function run() {
       res.send(result);
     })
     // read data of dell brand 
-    app.get('/brands/dell', async(req, res)=>{
-      const cursor = dellBrandCollection.find();
-      const result = await cursor.toArray();
-      // console.log(result);
-      res.send(result);
-    })
+    // app.get('/brands/dell', async(req, res)=>{
+    //   const cursor = dellBrandCollection.find();
+    //   const result = await cursor.toArray();
+    //   // console.log(result);
+    //   res.send(result);
+    // })
     // read data of apple brand 
     app.get('/brands/apple', async(req, res)=>{
       const cursor = appleBrandCollection.find();
@@ -103,6 +113,13 @@ async function run() {
     // read data of sony brand 
     app.get('/brands/sony', async(req, res)=>{
       const cursor = sonyBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
+    // read data of intel brand 
+    app.get('/brands/intel', async(req, res)=>{
+      const cursor = intelBrandCollection.find();
       const result = await cursor.toArray();
       // console.log(result);
       res.send(result);
@@ -201,12 +218,30 @@ async function run() {
       res.send(result);
     })
 
-    // ------------------Read my cart data ----------------------------
+    // ------------------Read all data from my cart data ----------------------------
     app.get('/mycart', async(req, res)=>{
       const cursor = myCartCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     })
+    // ---------------------Read one specific data from my cart----------------------
+    app.get('/mycart/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: id};
+      const result = await myCartCollection.findOne(query);
+      // console.log(result);
+      res.send(result);
+    })
+
+    //------------- create delete api to delete one time from mycart --------------------
+    app.delete('/mycart/:id',async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await myCartCollection.deleteOne(query);
+      res.send(result);
+    })
+    
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -218,11 +253,4 @@ async function run() {
 run().catch(console.dir);
 
 
-// create a root route 
-app.get('/',(req, res)=>{
-    res.send('Tech cosmos server is running...');
-})
 
-app.listen(port, ()=>{
-    console.log(`Server is running on PORT:${port}`);
-})
