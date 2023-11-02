@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const app = express();
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
 const port = process.env.PORT || 5033;
@@ -60,6 +61,15 @@ async function run() {
     const myCartCollection = client.db('brandDB').collection('myCartData');
     // create collection for brands advertisement 
     const brandAdvertisementCollection = client.db('brandDB').collection('brandAdvertisement');
+
+
+    // --------------------------Auth related api----------------------------
+    app.post('/jwt', async(req, res)=>{
+      const user = req.body;
+      console.log(user);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h'});
+      res.send(token);
+    })
 
     // -------------------Read data from database -----------------------
 
