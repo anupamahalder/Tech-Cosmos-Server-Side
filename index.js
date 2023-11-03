@@ -297,9 +297,15 @@ async function run() {
     })
     
 
-    // ------------------Read all data from my cart data ----------------------------
+    // ------------------Read all data from my cart data based on user---------------
     app.get('/mycart', async(req, res)=>{
-      const cursor = myCartCollection.find();
+      console.log(req.query.email);
+      let query = {};
+      // if email is there in req.query then set the email to query 
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const cursor = myCartCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     })
