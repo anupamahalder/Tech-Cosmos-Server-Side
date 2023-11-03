@@ -112,12 +112,12 @@ async function run() {
       res.send(result);
     })
     // read data of dell brand 
-    // app.get('/brands/dell', async(req, res)=>{
-    //   const cursor = dellBrandCollection.find();
-    //   const result = await cursor.toArray();
-    //   // console.log(result);
-    //   res.send(result);
-    // })
+    app.get('/brands/dell', async(req, res)=>{
+      const cursor = dellBrandCollection.find();
+      const result = await cursor.toArray();
+      // console.log(result);
+      res.send(result);
+    })
     // read data of apple brand 
     app.get('/brands/apple', async(req, res)=>{
       const cursor = appleBrandCollection.find();
