@@ -7,7 +7,11 @@ require('dotenv').config();
 const port = process.env.PORT || 5033;
 
 // middleware 
-app.use(cors());
+// as server and client are at different location so we have to link them
+app.use(cors({
+  origin: ['http://localhost:5173'],
+  credentials: true
+}));
 app.use(express.json());
 
 // create a root route 
@@ -68,7 +72,13 @@ async function run() {
       const user = req.body;
       console.log(user);
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h'});
-      res.send(token);
+      // set cookie [ cookie(token name, token value, options)]
+      res
+      .cookie('token', token,{
+        httpOnly: true,
+        secure: false,
+      })
+      .send({success: true});
     })
 
     // -------------------Read data from database -----------------------
