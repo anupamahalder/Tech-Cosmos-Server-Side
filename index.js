@@ -11,7 +11,7 @@ const port = process.env.PORT || 5033;
 // as server and client are at different location so we have to link them
 app.use(cors({
   // origin can contain sigle value or array 
-  origin: ['https://6544e8f420f77c253978fe75--chic-kheer-87183f.netlify.app'],
+  origin: ['https://654630f1bf24fd01cb594fe5--fancy-sopapillas-3eac4f.netlify.app'],
   credentials: true
 }));
 app.use(express.json());
@@ -36,6 +36,40 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+
+// ---------------------Create our own middleware------------------------
+
+// put this middleware to the middle of any api 
+const logger = async(req, res, next)=>{
+  // to display the url which is called 
+  console.log('Url called', req.host, req.originalUrl);
+  // then call next 
+  next();
+}
+// middleware to verify token and use this middleware to secure by token
+const verifyToken = async(req, res, next)=>{
+  const token = req.cookies?.token;
+  console.log('Value of token in verifyToken middleware', token);
+  if(!token){
+    return res.status(401).send({message: 'not authorized'});
+  }
+  // now verify token 
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, decoded)=>{
+    // error 
+    if(err){
+      console.log("Error in token verify", err);
+      return res.status(401).send({message: 'unauthorized'});
+    }
+    // if token is valid then it will be decoded 
+    console.log("The value in token after decoded", decoded);
+    const userEmail = decoded.email;
+    // set decoded to user 
+    req.user = decoded;
+    req.userEmail = userEmail;
+    // when decoded is successful then only go to next 
+    next();
+  })
+}
 
 async function run() {
   try {
@@ -71,9 +105,9 @@ async function run() {
 
 
     // --------------------------Auth related api----------------------------
-    app.post('/jwt', async(req, res)=>{
+    app.post('/jwt', logger, async(req, res)=>{
       const user = req.body;
-      console.log(user);
+      console.log('user',user);
       // jwt.sign(payload, secret, option)
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h'});
       // set cookie [ cookie(token name, token value, options)]
@@ -302,10 +336,14 @@ async function run() {
     
 
     // ------------------Read all data from my cart data based on user---------------
-    app.get('/mycart', async(req, res)=>{
+    app.get('/mycart', logger, verifyToken, async(req, res)=>{
       console.log(req.query.email);
       // from client side if there is provided withCredentials then it will get that 
       console.log('Token from client to mycart',req.cookies.token); //parser gives the name cookies
+      // if user wants other's mycart data then return 
+      if(req.query.email !== req.user.email){
+        return res.status(403).send({message: 'forbidden access'});
+      }
       let query = {};
       // if email is there in req.query then set the email to query 
       if(req.query?.email){
