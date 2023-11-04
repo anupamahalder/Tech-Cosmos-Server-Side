@@ -2,6 +2,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const app = express();
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
 const port = process.env.PORT || 5033;
@@ -9,10 +10,12 @@ const port = process.env.PORT || 5033;
 // middleware 
 // as server and client are at different location so we have to link them
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  // origin can contain sigle value or array 
+  origin: ['https://6544e8f420f77c253978fe75--chic-kheer-87183f.netlify.app'],
   credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // create a root route 
 app.get('/',(req, res)=>{
@@ -71,6 +74,7 @@ async function run() {
     app.post('/jwt', async(req, res)=>{
       const user = req.body;
       console.log(user);
+      // jwt.sign(payload, secret, option)
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h'});
       // set cookie [ cookie(token name, token value, options)]
       res
@@ -300,6 +304,8 @@ async function run() {
     // ------------------Read all data from my cart data based on user---------------
     app.get('/mycart', async(req, res)=>{
       console.log(req.query.email);
+      // from client side if there is provided withCredentials then it will get that 
+      console.log('Token from client to mycart',req.cookies.token); //parser gives the name cookies
       let query = {};
       // if email is there in req.query then set the email to query 
       if(req.query?.email){
@@ -580,6 +586,3 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
