@@ -11,9 +11,15 @@ const port = process.env.PORT || 5033;
 // as server and client are at different location so we have to link them
 app.use(cors({
   // origin can contain sigle value or array 
-  origin: ['https://654630f1bf24fd01cb594fe5--fancy-sopapillas-3eac4f.netlify.app'],
+  origin: ['https://654bc9ff6091fc2327a62181--idyllic-parfait-a7e9f6.netlify.app'],
   credentials: true
 }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://654bc9ff6091fc2327a62181--idyllic-parfait-a7e9f6.netlify.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -47,29 +53,29 @@ const logger = async(req, res, next)=>{
   next();
 }
 // middleware to verify token and use this middleware to secure by token
-const verifyToken = async(req, res, next)=>{
-  const token = req.cookies?.token;
-  console.log('Value of token in verifyToken middleware', token);
-  if(!token){
-    return res.status(401).send({message: 'not authorized'});
-  }
-  // now verify token 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, decoded)=>{
-    // error 
-    if(err){
-      console.log("Error in token verify", err);
-      return res.status(401).send({message: 'unauthorized'});
-    }
-    // if token is valid then it will be decoded 
-    console.log("The value in token after decoded", decoded);
-    const userEmail = decoded.email;
-    // set decoded to user 
-    req.user = decoded;
-    req.userEmail = userEmail;
-    // when decoded is successful then only go to next 
-    next();
-  })
-}
+// const verifyToken = async(req, res, next)=>{
+//   const token = req.cookies?.token;
+//   console.log('Value of token in verifyToken middleware', token);
+//   if(!token){
+//     return res.status(401).send({message: 'not authorized'});
+//   }
+//   // now verify token 
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, decoded)=>{
+//     // error 
+//     if(err){
+//       console.log("Error in token verify", err);
+//       return res.status(401).send({message: 'unauthorized'});
+//     }
+//     // if token is valid then it will be decoded 
+//     console.log("The value in token after decoded", decoded);
+//     const userEmail = decoded.email;
+//     // set decoded to user 
+//     req.user = decoded;
+//     req.userEmail = userEmail;
+//     // when decoded is successful then only go to next 
+//     next();
+//   })
+// }
 
 async function run() {
   try {
@@ -270,13 +276,6 @@ async function run() {
       const result = await dellBrandCollection.findOne(query);
       res.send(result);
     })
-    // ---------------Insert data for add to cart in myCartData collection --------
-
-    app.post('/mycart',async(req, res)=>{
-      const newData = req.body;
-      const result = await myCartCollection.insertOne(newData);
-      res.send(result);
-    })
     // ---------------Insert data for add products to google collection --------
 
     app.post('/brands/google',async(req, res)=>{
@@ -336,14 +335,14 @@ async function run() {
     
 
     // ------------------Read all data from my cart data based on user---------------
-    app.get('/mycart', logger, verifyToken, async(req, res)=>{
+    app.get('/mycart', async(req, res)=>{
       console.log(req.query.email);
       // from client side if there is provided withCredentials then it will get that 
       console.log('Token from client to mycart',req.cookies.token); //parser gives the name cookies
       // if user wants other's mycart data then return 
-      if(req.query.email !== req.user.email){
-        return res.status(403).send({message: 'forbidden access'});
-      }
+      // if(req.query.email !== req.user.email){
+      //   return res.status(403).send({message: 'forbidden access'});
+      // }
       let query = {};
       // if email is there in req.query then set the email to query 
       if(req.query?.email){
@@ -351,6 +350,14 @@ async function run() {
       }
       const cursor = myCartCollection.find(query);
       const result = await cursor.toArray();
+      res.send(result);
+    })
+    // ---------------Insert data for add to cart in myCartData collection --------
+
+    app.post('/mycart',async(req, res)=>{
+      const newData = req.body;
+      const result = await myCartCollection.insertOne(newData);
+      // res.status(200).json({ message: 'Item added to the cart' });
       res.send(result);
     })
     // ---------------------Read one specific data from my cart----------------------
